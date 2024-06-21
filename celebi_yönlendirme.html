@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="celebi_yönlendirme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .autocomplete-suggestions {
+            border: 1px solid #e4e4e4;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: white;
+            width: 200px;
+            z-index: 1000;
+        }
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-suggestion:hover {
+            background-color: #e4e4e4;
+        }
+    </style>
+</head>
+
+<header>
+    <div class="logo">
+        <img src="https://uploads.turbologo.com/uploads/design/preview_image/732146/preview_image20200905-25622-15zc69g.png" alt="TemizKal">
+    </div>
+    <h1>TemizKal</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Ana Sayfa</a></li>
+            <li><a href="../ozelweb/index.html#Servisler">Servisler</a></li>
+            <li><a href="#">İletişim</a></li>
+            <li><a href="giris_yap.html">Giriş Yap</a></li>
+            <li><a href="kayıt_ol.html">Kayıt Ol</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+
+<body>
+    <div class="upLabel">  
+        <div class="oklar">
+            <i class="fas fa-arrow-up"></i>
+            <i class="fas fa-arrow-down"></i>
+        </div>
+        <div class="searchBase" style="position: relative;">
+            <input type="text" id="searchInput" class="searchInput" placeholder="Konum Giriniz..">
+            <div id="autocompleteList" class="autocomplete-suggestions"></div>
+        </div>
+        <div class="aramaButonu">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+    <div class="temizlikciler">
+        <div class="temizlikci">
+            <div class="foto foto1"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 1</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+        <div class="temizlikci">
+            <div class="foto foto2"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 2</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+        <div class="temizlikci">
+            <div class="foto foto3"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 1</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+        <div class="temizlikci">
+            <div class="foto foto4"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 1</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+        <div class="temizlikci">
+            <div class="foto foto5"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 1</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+        <div class="temizlikci">
+            <div class="foto foto6"></div>
+            <div class="info">
+                <h3>Temizlikçi Adı 1</h3>
+                <p>Temizlikçi hakkında kısa bir açıklama.</p>
+            </div>
+            <div class="yildizlar">
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star gold"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="buttons">
+                <button class="comment">Yorum Yap</button>
+                <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
