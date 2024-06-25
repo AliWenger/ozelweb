@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Doğrulama - TemizKal</title>
+    <link rel="stylesheet" href="dogrulama.css">
+    <script src="dogrulama.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://uploads.turbologo.com/uploads/design/preview_image/732146/preview_image20200905-25622-15zc69g.png" alt="TemizKal">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Ana Sayfa</a></li>
+                <li><a href="../ozelweb/index.html#Servisler">Servisler</a></li>
+                <li><a href="../ozelweb/index.html#Hakkımızda">Hakkımızda</a></li>
+                <li><a href="../ozelweb/index.html#iletişim">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="verification">
+            <h1>Email Doğrulama</h1>
+            <form id="verification-form">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="verification-code">Doğrulama Kodu:</label>
+                    <input type="text" id="verification-code" name="verification-code" required>
+                </div>
+                <div id="error-message" class="error-message"></div>
+                <button type="submit" class="btn">Doğrula</button>
+            </form>
+        </section>
+        <div class="error-message" id="error-message"></div>
+    </main>
+</body>
+</html>

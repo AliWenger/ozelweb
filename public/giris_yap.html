@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SparkleClean</title>
     <link rel="stylesheet" href="giris_yap.css">
+    <script src="giris_yap.js"></script>
 </head>
 <body>
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+    </div>
     <header>
         <div class="logo">
             <img src="https://uploads.turbologo.com/uploads/design/preview_image/732146/preview_image20200905-25622-15zc69g.png" alt="TemizKal">
@@ -17,15 +21,13 @@
                 <li><a href="../ozelweb/index.html#Servisler">Servisler</a></li>
                 <li><a href="../ozelweb/index.html#Hakkımızda">Hakkımızda</a></li>
                 <li><a href="../ozelweb/index.html#iletişim">İletişim</a></li>
-             
             </ul>
         </nav>
     </header>
-
     <main>
         <section class="login">
             <h1>Temizkal'a Giriş Yap</h1>
-            <form action="index.html" method="post">
+            <form action="/login" id="signin-form" method="post">
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
@@ -36,10 +38,8 @@
                 </div>
                 <button type="submit" class="btn">Giriş Yap</button>
             </form>
-            <p>Hesabınız yok mu? <a href="kayit_ol.html">Kayıt Ol</a></p>
+            <p id="error-message" style="color: red;"></p>
         </section>
     </main>
-
-
 </body>
 </html>
