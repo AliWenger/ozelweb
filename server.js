@@ -6,7 +6,7 @@ const path = require('path');
 const connectDB = require('../ozelweb-1/db'); // Veritabanı bağlantısı için
 
 const app = express();
-const secretKey = 'secretK3y'; // JWT için gizli anahtar
+const secretKey = 'SecretK3y'; // JWT için gizli anahtar
 
 // Middleware
 app.use(express.static('public'));
@@ -92,11 +92,6 @@ async function findUserInformation(email, password) {
     }
 }
 
-// Profil sayfası endpoint'i
-app.get('/profil', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, 'profil.html')); 
-});
-
 // Oturum durumunu kontrol etme endpoint'i
 app.get('/check-auth', (req, res) => {
     const token = req.cookies.token;
@@ -107,7 +102,9 @@ app.get('/check-auth', (req, res) => {
         res.json({ authenticated: true });
     });
 });
+
+// Çıkış yap endpoint'i
 app.get('/logout', (req, res) => {
     res.clearCookie('token');
-    res.json({ loggedOut: true });
+    res.redirect('/index.html');
 });

@@ -46,20 +46,37 @@ scrollTopBtn.addEventListener('click', function() {
     document.documentElement.scrollTop = 0;
 });
 
-async function checkAuth() {
-    try {
-        const response = await fetch('/check-auth', { credentials: 'include' });
-        const data = await response.json();
-        if (data.authenticated) {
-            document.getElementById('giris-yap').style.display = 'none';
-            document.getElementById('kayit-ol').style.display = 'none';
-        } else {
-           console.log('error');
-        }
-    } catch (error) {
-        console.error('Oturum durumu kontrol edilirken hata oluştu:', error);
-    }
+function checkAuth() {
+    fetch('/check-auth', { credentials: 'include' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {
+                document.getElementById('giris').style.display = 'none';
+                document.getElementById('kayit').style.display = 'none';
+                document.getElementById('profil').style.display = 'block';
+                document.getElementById('logout').style.display = 'block';
+            } else {
+                document.getElementById('giris').style.display = 'block';
+                document.getElementById('kayit').style.display = 'block';
+                document.getElementById('profil').style.display = 'none';
+                document.getElementById('logout').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Oturum durumu kontrol edilirken hata:', error);
+        });
 }
 
-// Sayfa yüklendiğinde oturum durumunu kontrol et
-window.onload = checkAuth;
+function logout() {
+    fetch('/logout', { credentials: 'include' })
+        .then(() => {
+            window.location.href = '/index.html';
+        })
+        .catch(error => {
+            console.error('Çıkış yapılırken hata:', error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', checkAuth);
+document.getElementById('logout').addEventListener('click', logout);
+
