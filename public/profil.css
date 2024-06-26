@@ -1,10 +1,45 @@
 /* Google Fonts'dan Roboto fontu eklendi */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+header .logo img {
+    width: 50px;
+    height: auto;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 0;
+    padding-top: 80px; /* Header yüksekliğine göre padding ayarlandı */
     background: linear-gradient(120deg, #f0f4f8, #d9e7ff);
     color: #333;
     display: flex;
@@ -13,24 +48,14 @@ body {
     min-height: 100vh;
 }
 
-.profile-container {
-    width: 80%;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 40px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 40px;
-}
+
 
 .profile-header {
+    margin-right: 300px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 30px;
+    padding-top: 30px;
     border-bottom: 2px solid #ececec;
 }
 
@@ -38,6 +63,7 @@ body {
     display: flex;
     align-items: center;
 }
+
 .profile-photo {
     width: 150px;
     height: 150px;
@@ -89,6 +115,7 @@ body {
     margin-bottom: 20px;
     font-weight: 700;
 }
+
 .cleaning-entry {
     display: flex;
     align-items: center;
@@ -105,42 +132,8 @@ body {
 }
 
 .cleaning-entry img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-    margin-right: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    width: 300px;
+    height: 200px;
+    margin-right: 20px;}
 
-.cleaning-details p {
-    margin: 10px 0;
-    color: #333333;
-    font-size: 18px;
-}
-
-.cleaning-details p strong {
-    color: #ff6600;
-    font-weight: 500;
-}
-
-/* Responsive tasarım için düzenlemeler */
-@media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .profile-rating {
-        margin-top: 20px;
-        text-align: left;
-    }
-
-    .cleaning-entry {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .cleaning-entry img {
-        margin-bottom: 20px;
-    }
-}
+   

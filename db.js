@@ -1,8 +1,8 @@
 // db.js
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb+srv://User:j257hTMGlXCwD0Ab@cluster.s7vldvl.mongodb.net';
-const dbName = 'temizKal';
+const url = 'mongodb+srv://susanoglu89:cC38ETNJ3O8Rg4Nw@cluster0.ziv8bgd.mongodb.net/';
+const dbName = 'web';
 const collectionName='users';
 let db;
 let collection;

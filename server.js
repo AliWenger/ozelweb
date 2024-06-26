@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const connectDB = require('../ozelweb-1/db'); // Veritabanı bağlantısı için
+const connectDB = require('../ozelweb/db'); // Veritabanı bağlantısı için
 
 const app = express();
 const secretKey = 'SecretK3y'; // JWT için gizli anahtar
