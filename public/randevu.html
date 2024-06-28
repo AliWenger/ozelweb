@@ -23,7 +23,7 @@
         <div class="form-container">
             <h2>ONLINE RANDEVU FORMU</h2>
             <p>Randevu kaydınızın ardından size en uygun programın oluşturulabilmesi için lütfen <strong>telefon</strong> ile teyit ettiriniz.</p>
-            <form id="appointmentForm">
+            <form id="randevuSayfasi" action="/randevu_al" method="post">
                 <div class="form-group">
                     <label for="name">İsminiz ve Soyisminiz *</label>
                     <input type="text" id="name" name="name" required>
@@ -49,11 +49,11 @@
                     <textarea id="message" name="message" required></textarea>
                 </div>
                 
-                <button type="submit">RANDEVUYU AL</button>
+                <button type="submit" id="randevuyuOnayla">RANDEVUYU AL</button>
             </form>
         </div>
     </main>
 
-    <script src="scripts.js"></script>
+    <script defer src="randevu.js"></script>
 </body>
 </html>

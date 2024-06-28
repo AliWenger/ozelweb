@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const autocompleteList = document.getElementById('autocompleteList');
     const searchButton = document.querySelector('.aramaButonu .fas.fa-search');
     const temizlikcilerContainer = document.querySelector('.temizlikciler');
+    const oklar = document.getElementById('oklar');
 
-    // Statik konum listesi
+    // Static location list
     const cities = [
         'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 
         'Ankara', 'Antalya', 'Ardahan', 'Artvin', 'Aydın', 'Balıkesir', 
@@ -21,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Uşak', 'Van', 
         'Yalova', 'Yozgat', 'Zonguldak'
     ];
-    
-    // Arama kutusuna yazdıkça önerileri gösteren fonksiyon
+
+    // Function to show suggestions as user types in search input
     searchInput.addEventListener('input', () => {
         const input = searchInput.value.toLowerCase();
         autocompleteList.innerHTML = '';
@@ -41,55 +42,93 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Temizlikçileri getiren fonksiyon
+    // Function to fetch cleaners based on selected location
     async function fetchCleaners(city) {
-        try {           
-        const response = await fetch(`/get-cleaners?konum=${city}`);
-        const cleaners = await response.json();
-        return cleaners;
-    } catch (error) {
-        console.error('Temizlikçiler alınırken hata:', error);
+        try {
+            const response = await fetch(`/get-cleaners?konum=${city}`);
+            const cleaners = await response.json();
+            return cleaners;
+        } catch (error) {
+            console.error('Error fetching cleaners:', error);
+        }
     }
-}
 
-// Arama butonuna tıklanınca seçilen konumu işleyen fonksiyon
-searchButton.addEventListener('click', async () => {
-    const selectedLocation = searchInput.value;
-    if (cities.includes(selectedLocation)) {
-        const cleaners = await fetchCleaners(selectedLocation);
-        temizlikcilerContainer.innerHTML = '';
-        cleaners.forEach(cleaner => {
-            const cleanerDiv = document.createElement('div');
-            cleanerDiv.classList.add('temizlikci');
-            cleanerDiv.innerHTML = `
-                <div class="foto"></div>
-                <div class="info">
-                    <h3>${cleaner.name}</h3>
-                    <p>Temizlikçi hakkında kısa bir açıklama.</p>
-                </div>
-                <div class="yildizlar">
-                    <i class="fas fa-star gold"></i>
-                    <i class="fas fa-star gold"></i>
-                    <i class="fas fa-star gold"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <div class="buttons">
-                    <button class="comment">Yorum Yap</button>
-                    <button class="gecmisTemizlik">Geçmiş Temizlikleri Listele</button>
-                </div>
-            `;
-            temizlikcilerContainer.appendChild(cleanerDiv);
+    // Event listener for search button click
+    searchButton.addEventListener('click', async () => {
+        const selectedLocation = searchInput.value;
+        if (cities.includes(selectedLocation)) {
+            const cleaners = await fetchCleaners(selectedLocation);
+            temizlikcilerContainer.innerHTML = '';
+            cleaners.forEach(cleaner => {
+                const cleanerDiv = document.createElement('div');
+                cleanerDiv.classList.add('temizlikci');
+                cleanerDiv.dataset.cleanerId = cleaner._id; // Store cleaner ID in dataset
+                cleanerDiv.innerHTML = `
+                    <div class="foto">
+                        <img src="https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600" width="120" height="120" alt="temizlikçi fotoğrafı">
+                    </div>
+                    <div class="info">
+                        <h3>${cleaner.isim + ' ' + cleaner.soyisim}</h3>
+                        <p>${cleaner.aciklama}</p>
+                    </div>
+                    <div class="puanlama">
+                        <h3>${cleaner.puan + '/5'}</h3>
+                    </div>
+                    <div class="buttons">
+                        <a href="temizlikci.html?id=${cleaner._id}" class="comment" id="comment">Yorum Yap</a>
+                        <a href="temizlikci.html?id=${cleaner._id}" class="gecmisTemizlik" id="gecmisTemizlik">Geçmiş Temizlikleri Listele</a>
+                    </div>
+                `;
+                temizlikcilerContainer.appendChild(cleanerDiv);
+            });
+        } else {
+            alert('Lütfen geçerli bir konum seçiniz.');
+        }
+    });
+
+    // Event listener for sorting cleaners by rating when arrows are clicked
+    oklar.addEventListener('click', (event) => {
+        const clickedElement = event.target;
+        if (clickedElement.classList.contains('fas')) {
+            const isAscending = clickedElement.classList.contains('fa-arrow-up');
+            sortCleanersByRating(isAscending);
+        }
+    });
+
+    // Event listener for clicking on a cleaner to view profile
+    temizlikcilerContainer.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('temizlikci')) {
+            const cleanerId = event.target.dataset.cleanerId; // Get cleaner ID from dataset
+            sessionStorage.setItem('cleanerId', cleanerId); // Store cleaner ID in sessionStorage
+            window.location.href = 'temizlikci.html?id=${cleaner._id}'; // Redirect to cleaner profile page
+        }
+    });
+
+    // Function to sort cleaners by rating
+    function sortCleanersByRating(ascending) {
+        const temizlikciler = Array.from(temizlikcilerContainer.querySelectorAll('.temizlikci'));
+
+        temizlikciler.sort((a, b) => {
+            const ratingA = parseFloat(a.querySelector('.puanlama h3').textContent);
+            const ratingB = parseFloat(b.querySelector('.puanlama h3').textContent);
+
+            if (ascending) {
+                return ratingA - ratingB;
+            } else {
+                return ratingB - ratingA;
+            }
         });
-    } else {
-        alert('Lütfen geçerli bir konum seçiniz.');
-    }
-});
 
-// Sayfa dışında tıklanınca önerileri gizleyen fonksiyon
-document.addEventListener('click', (event) => {
-    if (!searchInput.contains(event.target)) {
-        autocompleteList.innerHTML = '';
+        // Append sorted cleaners back to the container
+        temizlikciler.forEach(cleaner => {
+            temizlikcilerContainer.appendChild(cleaner);
+        });
     }
-});
+
+    // Function to hide autocomplete suggestions when clicking outside searchInput
+    document.addEventListener('click', (event) => {
+        if (!searchInput.contains(event.target)) {
+            autocompleteList.innerHTML = '';
+        }
+    });
 });

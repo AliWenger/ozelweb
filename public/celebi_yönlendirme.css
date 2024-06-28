@@ -1,8 +1,17 @@
+/* Genel Stil */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Header */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px;
+    padding: 10px 20px;
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -15,7 +24,7 @@ header .logo img {
 header nav ul {
     list-style: none;
     margin: 0;
-    padding-right: 10px;
+    padding: 0;
     display: flex;
 }
 
@@ -29,75 +38,40 @@ header nav ul li a {
     font-weight: bold;
 }
 
-
-h1{
+/* Başlık */
+h1 {
     text-align: left;
-    font-size: 3.0rem; /* Başlık font büyüklüğü */
-    
-  padding-right: 600px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font ailesi */
-    
-    letter-spacing: 1px; /* Harfler arası boşluk */
-    font-weight: bold; /* Kalın font */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Metin gölge */
-
-}
-
-
-
-
-
-/* Genel Stil */
-body {
-    font-family: Arial, sans-serif;
+    font-size: 3.0rem;
+    padding-right: 20px; /* Önceki 600px'den 20px'ye düşürüldü */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
 }
 
-/* Üst Menüsü */
+/* Üst Menü */
 .upLabel {
-   margin-top: 20px;
+    margin-top: 20px;
     top: 0;
     left: 0;
     width: calc(100% - 300px);
-    padding: 27px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #f0f0f0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;margin-left: 125px;
+    z-index: 1000;
+    margin-left: 125px;
 }
 
-.upLabel .oklar i,
-
-
+.upLabel .oklar i{
+    cursor: pointer;
+    font-size: 20px;
+}
 .upLabel .aramaButonu i {
     font-size: 20px;
-
-
-}
-
-.upLabel .searchInput {
-    padding: 12px;
-    font-size: 18px;
-}
-
-.upLabel .oklar {
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    margin-right:-10px;
-}
-
-.upLabel .oklar i {
-    font-size: 15px;
 }
 
 .upLabel .searchBase {
@@ -106,9 +80,8 @@ body {
 }
 
 .upLabel .searchInput {
-    
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 18px;
@@ -116,15 +89,9 @@ body {
 }
 
 .upLabel .aramaButonu {
-    position:absolute;
-    padding: 8.2px;
-    right: 144px;
-    top: 24.15%;
-    transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
+    padding: 12px;
     background-color: #007bff;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -132,8 +99,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
-    margin-bottom: 440px;
 }
 
 /* Temizlikçi Kartları */
@@ -146,9 +111,9 @@ body {
 
 .temizlikci {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between; /* Değişti: flex-start'ten space-between'e */
     align-items: center;
-    width: 80%; /* Genişlik biraz küçültüldü */
+    width: 80%;
     margin: 20px auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -157,82 +122,51 @@ body {
 }
 
 .temizlikci:hover {
-    transform: scale(1.05); /* Hover durumunda daha az büyüt */
+    transform: scale(1.05);
 }
-
-.temizlikci .info {
-    display: flex;
-    flex-direction: column;
-    margin-left: 150px;
-}
-
 
 .temizlikci .foto {
-    width: 120px; /* Fotoğraf genişliği azaltıldı */
-    height: 120px; /* Fotoğraf yüksekliği azaltıldı */
+    width: 120px;
+    height: 120px;
     background-color: #ccc;
     margin-right: 10px;
     border-radius: 10px;
     background-size: cover;
     background-position: center;
-    background-color: blue;
+    background-color: blue; /* Düzeltildi: Görüntülenmeyen background-color silindi */
 }
 
-
-.yildizlar {
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-    margin-left: 100px;
+.temizlikci .info {
+    flex: 1;
+    margin-left: 20px; /* Değişti: 150px'den 20px'ye */
 }
 
-.yildizlar i {
-    font-size: 30px;
-    color: #ccc;
+.puanlama {
+    width: 60px; /* Değişti: 200px'den 60px'ye */
+    text-align: center; /* Eklendi: Puanların ortalanması için */
+    margin-left: 20px; /* Eklendi: Uyumlu bir düzen için */
 }
 
-.yildizlar i.gold {
-    color: gold;
+.puanlama h3 {
+    margin: 0;
 }
 
-/* Specific photo classes */
-.foto1 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); /* Gerçek fotoğraf url'si ile değiştirin */
-}
-
-.foto2 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600');
-}
-
-.foto3 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
-}
-
-.foto4 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
-}
-
-.foto5 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600');
-}
-
-.temizlikci .foto6 {
-    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
-}
 .buttons {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-left: 150px;
+    margin-left: 20px; /* Değişti: 150px'den 20px'ye */
 }
 
-.buttons .comment, .buttons .gecmisTemizlik {
+.buttons .comment,
+.buttons .gecmisTemizlik {
     padding: 10px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
 .buttons .comment {

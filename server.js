@@ -1,11 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose'); 0
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const path = require('path');
-const cors = require('cors');
-const connectDB = require('../ozelweb/db'); // Veritabanı bağlantısı için
+const connectDB = require('../ozelweb-1/db'); // db.js dosyasını dahil edin
+const mongoose = require('mongoose');
 
 const app = express();
 const secretKey = 'SecretK3y'; // JWT için gizli anahtar
@@ -29,9 +27,10 @@ function authenticateToken(req, res, next) {
 }
 
 // Veritabanına doküman eklemek için asenkron işlev
-async function insertDocument(data) {
+async function insertDocument(data, collectionName) {
     try {
-        const { collection } = await connectDB();
+        const db = await connectDB();
+        const collection = db.collection(collectionName); // İstediğiniz koleksiyonu burada belirtin
         const result = await collection.insertOne(data);
         console.log('Doküman eklendi:', result.insertedId);
         return result;
@@ -41,10 +40,43 @@ async function insertDocument(data) {
     }
 }
 
-// Sunucu 3000 portunda dinleme
-app.listen(3000, () => {
-    console.log('Sunucu 3000 portunda çalışıyor');
+// Temizlikçileri getiren endpoint
+app.get('/get-cleaners', async (req, res) => {
+    const { konum } = req.query;
+
+    try {
+        const db = await connectDB();
+        const collection = db.collection('cleaners');
+        const cleaners = await collection.find({ konum: new RegExp(`^${konum}`, 'i') }).toArray();
+        res.json(cleaners);
+    } catch (error) {
+        console.error('Temizlikçi ararken hata:', error);
+        res.status(500).json({ error: 'Sunucu Hatası' });
+    }
 });
+
+app.get('/cleaner-profile', async (req, res) => {
+    const { id } = req.query;
+
+    try {
+        const db = await connectDB();
+        const collection = db.collection('cleaners');
+        const cleaner = await collection.findOne({ _id: new mongoose.Types.ObjectId(id) });
+
+        if (!cleaner) {
+            return res.status(404).json({ error: 'Temizlikçi bulunamadı' });
+        }
+
+        const commentsCollection = db.collection('comments');
+        const comments = await commentsCollection.find({ id: id }).toArray();
+
+        res.status(200).json({ cleaner, comments });
+    } catch (error) {
+        console.error('Profil bilgileri alınırken hata:', error);
+        res.status(500).json({ error: 'Sunucu Hatası' });
+    }
+});
+
 
 // Kayıt ol endpoint'i
 app.post('/kayit_ol', async (req, res) => {
@@ -55,7 +87,7 @@ app.post('/kayit_ol', async (req, res) => {
         return res.status(400).json({ error: 'Şifreler eşleşmiyor' });
     } else {
         try {
-            await insertDocument({ name, email, phone, password });
+            await insertDocument({ name, email, phone, password }, 'users'); // 'users' koleksiyonunu kullanıyoruz
             res.status(200).json({ success: true });
         } catch (error) {
             console.error('Doküman eklenirken hata:', error);
@@ -69,8 +101,10 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await findUserInformation(email, password);
-        if (user && user.email === email && user.password === password) {
+        const db = await connectDB();
+        const collection = db.collection('users'); // 'users' koleksiyonunu kullanıyoruz
+        const user = await collection.findOne({ email, password });
+        if (user) {
             const token = jwt.sign({ email: user.email }, secretKey, { expiresIn: '1h' });
             res.cookie('token', token, { httpOnly: true });
             res.status(200).json({ success: true });
@@ -82,17 +116,6 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ error: 'Sunucu Hatası' });
     }
 });
-
-async function findUserInformation(email, password) {
-    try {
-        const { collection } = await connectDB();
-        const result = await collection.findOne({ email, password });
-        return result;
-    } catch (err) {
-        console.error('Kullanıcı bilgileri alınırken hata:', err);
-        return null;
-    }
-}
 
 // Oturum durumunu kontrol etme endpoint'i
 app.get('/check-auth', (req, res) => {
@@ -111,143 +134,21 @@ app.get('/logout', (req, res) => {
     res.redirect('/index.html');
 });
 
+// Yorum ekle endpoint'i
+app.post('/add_comment', authenticateToken, async (req, res) => {
+    const { email, message, rating } = req.body;
 
-
-const cleanerSchema = new mongoose.Schema({
-    name: String,
-    city: String,
-  });
-  
-  const Cleaner = mongoose.model('Cleaner', cleanerSchema);
-  
-  // API route to get cleaners by city
-  app.get('/cleaners/:city', async (req, res) => {
     try {
-      const city = req.params.city;
-      const cleaners = await Cleaner.find({ city: city });
-      res.json(cleaners);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Server Error');
-    }
-  });
-  
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-
-
-  //RAndevu
-  const randevuSchema = new mongoose.Schema({
-    date: String,
-    time: String,
-});
-
-const Randevu = mongoose.model('Randevu', randevuSchema);
-
-// Kullanıcı şeması ve modeli
-const kullaniciSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-});
-
-const Kullanici = mongoose.model('Kullanici', kullaniciSchema);
-
-// Randevu oluşturma
-app.post('/api/randevular', async (req, res) => {
-    const randevu = new Randevu(req.body);
-    try {
-        await randevu.save();
-        res.status(201).send(randevu);
+        const db = await connectDB();
+        const collection = db.collection('comments');
+        const result = await collection.insertOne({ email, message, rating });
+        res.status(200).json({ success: true });
     } catch (error) {
-        console.error('Error saving appointment:', error);
-        res.status(400).send({ error: 'Error saving appointment' });
+        console.error('Yorum eklenirken hata:', error);
+        res.status(500).json({ error: 'Sunucu Hatası' });
     }
 });
 
-// Kullanıcı oluşturma
-app.post('/api/kullanicilar', async (req, res) => {
-    const kullanici = new Kullanici(req.body);
-    try {
-        await kullanici.save();
-        res.status(201).send(kullanici);
-    } catch (error) {
-        console.error('Error saving user:', error);
-        res.status(400).send({ error: 'Error saving user' });
-    }
-});
-
-// Randevuları listeleme
-app.get('/api/randevular', async (req, res) => {
-    try {
-        const randevular = await Randevu.find();
-        res.send(randevular);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Kullanıcıları listeleme
-app.get('/api/kullanicilar', async (req, res) => {
-    try {
-        const kullanicilar = await Kullanici.find();
-        res.send(kullanicilar);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Randevu silme
-app.delete('/api/randevular/:id', async (req, res) => {
-    try {
-        const randevu = await Randevu.findByIdAndDelete(req.params.id);
-        if (!randevu) res.status(404).send("No item found");
-        res.status(200).send();
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Kullanıcı silme
-app.delete('/api/kullanicilar/:id', async (req, res) => {
-    try {
-        const kullanici = await Kullanici.findByIdAndDelete(req.params.id);
-        if (!kullanici) res.status(404).send("No item found");
-        res.status(200).send();
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Randevu güncelleme
-app.put('/api/randevular/:id', async (req, res) => {
-    try {
-        const randevu = await Randevu.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-        });
-        if (!randevu) res.status(404).send("No item found");
-        res.status(200).send(randevu);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-// Kullanıcı güncelleme
-app.put('/api/kullanicilar/:id', async (req, res) => {
-    try {
-        const kullanici = await Kullanici.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-        });
-        if (!kullanici) res.status(404).send("No item found");
-        res.status(200).send(kullanici);
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(3000, () => {
+    console.log('Sunucu 3000 portunda çalışıyor');
 });
