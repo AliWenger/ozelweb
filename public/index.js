@@ -80,3 +80,6 @@ function logout() {
 document.addEventListener('DOMContentLoaded', checkAuth);
 document.getElementById('logout').addEventListener('click', logout);
 
+function redirectToAppointmentPage() {
+    window.location.href = '/randevu.html'; // Randevu alma sayfasına yönlendirin
+}

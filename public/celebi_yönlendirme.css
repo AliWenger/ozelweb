@@ -197,27 +197,27 @@ body {
 
 /* Specific photo classes */
 .foto1 {
-    background-image: url('photos/temizlikResmi1.jpg'); /* Gerçek fotoğraf url'si ile değiştirin */
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); /* Gerçek fotoğraf url'si ile değiştirin */
 }
 
 .foto2 {
-    background-image: url('photos/temizlikResmi2.jpg');
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600');
 }
 
 .foto3 {
-    background-image: url('photos/temizlikResmi3.jpg'); 
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
 }
 
 .foto4 {
-    background-image: url('photos/temizlikResmi4.jpg'); 
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
 }
 
 .foto5 {
-    background-image: url('photos/temizlikResmi5.jpg');
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600');
 }
 
 .temizlikci .foto6 {
-    background-image: url('photos/temizlikResmi6.jpg'); 
+    background-image: url('https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600'); 
 }
 .buttons {
     display: flex;

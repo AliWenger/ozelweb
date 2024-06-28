@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose'); 0
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const cors = require('cors');
 const connectDB = require('../ozelweb/db'); // Veritabanı bağlantısı için
 
 const app = express();
@@ -134,3 +136,118 @@ const cleanerSchema = new mongoose.Schema({
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+
+
+  //RAndevu
+  const randevuSchema = new mongoose.Schema({
+    date: String,
+    time: String,
+});
+
+const Randevu = mongoose.model('Randevu', randevuSchema);
+
+// Kullanıcı şeması ve modeli
+const kullaniciSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+});
+
+const Kullanici = mongoose.model('Kullanici', kullaniciSchema);
+
+// Randevu oluşturma
+app.post('/api/randevular', async (req, res) => {
+    const randevu = new Randevu(req.body);
+    try {
+        await randevu.save();
+        res.status(201).send(randevu);
+    } catch (error) {
+        console.error('Error saving appointment:', error);
+        res.status(400).send({ error: 'Error saving appointment' });
+    }
+});
+
+// Kullanıcı oluşturma
+app.post('/api/kullanicilar', async (req, res) => {
+    const kullanici = new Kullanici(req.body);
+    try {
+        await kullanici.save();
+        res.status(201).send(kullanici);
+    } catch (error) {
+        console.error('Error saving user:', error);
+        res.status(400).send({ error: 'Error saving user' });
+    }
+});
+
+// Randevuları listeleme
+app.get('/api/randevular', async (req, res) => {
+    try {
+        const randevular = await Randevu.find();
+        res.send(randevular);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Kullanıcıları listeleme
+app.get('/api/kullanicilar', async (req, res) => {
+    try {
+        const kullanicilar = await Kullanici.find();
+        res.send(kullanicilar);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Randevu silme
+app.delete('/api/randevular/:id', async (req, res) => {
+    try {
+        const randevu = await Randevu.findByIdAndDelete(req.params.id);
+        if (!randevu) res.status(404).send("No item found");
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Kullanıcı silme
+app.delete('/api/kullanicilar/:id', async (req, res) => {
+    try {
+        const kullanici = await Kullanici.findByIdAndDelete(req.params.id);
+        if (!kullanici) res.status(404).send("No item found");
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Randevu güncelleme
+app.put('/api/randevular/:id', async (req, res) => {
+    try {
+        const randevu = await Randevu.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!randevu) res.status(404).send("No item found");
+        res.status(200).send(randevu);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+// Kullanıcı güncelleme
+app.put('/api/kullanicilar/:id', async (req, res) => {
+    try {
+        const kullanici = await Kullanici.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+        if (!kullanici) res.status(404).send("No item found");
+        res.status(200).send(kullanici);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
