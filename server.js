@@ -56,7 +56,7 @@ app.get('/get-cleaners', async (req, res) => {
 });
 
 app.get('/cleaner-profile', async (req, res) => {
-    const { id } = req.query;
+    const id = req.query.id;
 
     try {
         const db = await connectDB();
@@ -68,7 +68,7 @@ app.get('/cleaner-profile', async (req, res) => {
         }
 
         const commentsCollection = db.collection('comments');
-        const comments = await commentsCollection.find({ id: id }).toArray();
+        const comments = await commentsCollection.find({ cleanerId: id }).toArray();
 
         res.status(200).json({ cleaner, comments });
     } catch (error) {
@@ -76,7 +76,6 @@ app.get('/cleaner-profile', async (req, res) => {
         res.status(500).json({ error: 'Sunucu Hatası' });
     }
 });
-
 
 // Kayıt ol endpoint'i
 app.post('/kayit_ol', async (req, res) => {
@@ -136,12 +135,12 @@ app.get('/logout', (req, res) => {
 
 // Yorum ekle endpoint'i
 app.post('/add_comment', authenticateToken, async (req, res) => {
-    const { email, message, rating } = req.body;
+    const { email, rating, comment } = req.body;
 
     try {
         const db = await connectDB();
         const collection = db.collection('comments');
-        const result = await collection.insertOne({ email, message, rating });
+        const result = await collection.insertOne({email, rating, comment});
         res.status(200).json({ success: true });
     } catch (error) {
         console.error('Yorum eklenirken hata:', error);
@@ -151,4 +150,19 @@ app.post('/add_comment', authenticateToken, async (req, res) => {
 
 app.listen(3000, () => {
     console.log('Sunucu 3000 portunda çalışıyor');
+});
+
+app.post('/randevu_al',async(req,res)=>{
+    const {name,phone,email,date,time,message}=req.body;
+    const db=await connectDB();
+    const collection=db.collection('randevular');
+    const result=await collection.insertOne({name,phone,email,date,time,message});
+    res.status(200).json({success:true});
+});
+
+app.get('/randevular',async(req,res)=>{
+    const db=await connectDB();
+    const collection=db.collection('randevular');
+    const result=await collection.find().toArray();
+    res.status(200).json(result);
 });

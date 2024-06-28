@@ -89,6 +89,7 @@ body {
 
 .profile-rating {
     text-align: right;
+    margin-left: 100px;
 }
 
 .stars {
@@ -98,9 +99,10 @@ body {
 
 .rating {
     display: block;
-    font-size: 24px;
+    font-size:100px;
     color: #333333;
     font-weight: 500;
+ 
 }
 
 .cleaning-history {
@@ -136,4 +138,79 @@ body {
     height: 200px;
     margin-right: 20px;}
 
-   
+    .profile {
+        text-align: center;
+        padding: 2em 0;
+        background-color: #ffffff;
+        margin-bottom: 1em;
+    }
+    
+    .profile-pic {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+    
+    .profile h1 {
+        margin: 0.5em 0;
+    }
+    
+    .profile p {
+        color: #777;
+    }
+    
+    .rating {
+        font-size: 2em;
+        color: #ff9900;
+    }
+    
+    .reviews {
+        padding: 1em;
+        background-color: #ffffff;
+    }
+    
+    .review {
+        display: flex;
+        align-items: center;
+        padding: 1em 0;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .review img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        margin-right: 1em;
+    }
+    
+    .review-content {
+        flex: 1;
+    }
+    
+    .review-content h3 {
+        margin: 0 0 0.5em 0;
+    }
+    
+    .review-content p {
+        margin: 0.5em 0;
+    }
+    
+    .btn-update,
+    .btn-cancel {
+        padding: 0.5em 1em;
+        margin-right: 0.5em;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    
+    .btn-update {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    .btn-cancel {
+        background-color: #dc3545;
+        color: white;
+    }

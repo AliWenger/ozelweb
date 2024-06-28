@@ -1,52 +1,70 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const cleanerId = sessionStorage.getItem('cleanerId');
+    // URL'den cleanerId'yi al
+    const urlParams = new URLSearchParams(window.location.search);
+    const cleanerId = urlParams.get('id'); // URL'de id parametresi varsa alır
 
-    if (!cleanerId) {
-        console.error('Cleaner ID bulunamadı.');
-        return;
-    }
+    if (cleanerId) {
+        try {
+            const response = await fetch(`/cleaner-profile?id=${cleanerId}`);
+            const data = await response.json();
 
-    try {
-        const response = await fetch(`/cleaner-profile?cleanerId=${cleanerId}`);
-        const { cleaner, comments } = await response.json();
+            if (response.ok) {
+                const { cleaner, comments } = data;
 
-        if (!cleaner) {
-            console.error('Temizlikçi bilgileri alınamadı.');
-            return;
+                // Temizlikçi bilgilerini dinamik olarak göster
+                document.getElementById('cleanerName').textContent = `${cleaner.isim} ${cleaner.soyisim}`;
+                document.getElementById('cleanerDescription').textContent = cleaner.aciklama;
+                document.getElementById('cleanerRating').textContent = `${cleaner.puan}/5`;
+                document.getElementById('cleanerImage').src = cleaner.image || 'https://images.pexels.com/photos/1525041/pexels-photo-1525041.jpeg?auto=compress&cs=tinysrgb&w=600';
+
+                // Yorumları dinamik olarak göster
+                const reviewsContainer = document.getElementById('reviewsContainer');
+                comments.forEach(comment => {
+                    const reviewElement = createReviewElement(comment);
+                    reviewsContainer.appendChild(reviewElement);
+                });
+            } else {
+                console.error('Temizlikçi bulunamadı', data.error);
+            }
+        } catch (error) {
+            console.error('Veri alınırken hata oluştu:', error);
         }
-
-        // Temizlikçi bilgilerini gösterme
-        const temizlikciContainer = document.querySelector('.temizlikci-container');
-        temizlikciContainer.innerHTML = `
-            <div class="foto">
-                <img src="https://images.pexels.com/photos/3768914/pexels-photo-3768914.jpeg?auto=compress&cs=tinysrgb&w=600" width="120" height="120" alt="temizlikçi fotoğrafı">
-            </div>
-            <div class="info">
-                <h3>${cleaner.isim} ${cleaner.soyisim}</h3>
-                <p>${cleaner.aciklama}</p>
-            </div>
-            <div class="puanlama">
-                <h3>${cleaner.puan}/5</h3>
-            </div>
-            <div class="buttons">
-                <a href="temizlikci.html#yorum_new" class="comment" id="comment">Yorum Yap</a>
-                <a href="temizlikci.html" class="gecmisTemizlik" id="gecmisTemizlik">Geçmiş Temizlikleri Listele</a>
-            </div>
-        `;
-
-        // Yorumları gösterme
-        const commentsContainer = document.querySelector('.yorumlar-container');
-        commentsContainer.innerHTML = '';
-        comments.forEach(comment => {
-            const commentDiv = document.createElement('div');
-            commentDiv.classList.add('yorum');
-            commentDiv.innerHTML = `
-                <p><strong>${comment.email}</strong> (${comment.rating}/5): ${comment.message}</p>
-            `;
-            commentsContainer.appendChild(commentDiv);
-        });
-
-    } catch (error) {
-        console.error('Temizlikçi profili alınırken bir hata oluştu:', error);
+    } else {
+        console.error('ID parametresi bulunamadı');
     }
+
+    // Yorum ekleme formunu gönderme işlemi
+    const reviewForm = document.getElementById('reviewForm');
+    reviewForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const location = document.getElementById('email').value;
+        const rating = document.getElementById('rating').value;
+        const comment = document.getElementById('comment').value;
+    
+        const formData = {
+            email:email,
+            rating: rating,
+            comment: comment
+        };
+
+        try {
+            const response = await fetch('/add_comment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                window.alert('Yorum başarıyla eklendi');
+                reviewForm.reset(); // Formu sıfırla
+            } else {
+                console.error('Yorum eklenirken hata:', await response.json());
+            }
+        } catch (error) {
+            console.error('Yorum eklenirken hata:', error);
+        }
+    });
 });
